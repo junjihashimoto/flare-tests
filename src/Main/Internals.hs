@@ -17,6 +17,7 @@ import GHC.Generics (Generic)
 import System.Directory
 import System.FilePath
 import System.Random
+import System.Process
 
 import Paths_flare_tests (getBinDir)
 
@@ -131,6 +132,9 @@ setupFlareDaemon fd = do
   yieldProgress $ "Setting up " ++ fdId fd
   port <- getPort (fdId fd)
   let hpId = "localhost " ++ show port
+  liftIO $ threadDelay 2000000
+  liftIO $ system "sudo netstat -anp | grep flare"
+  liftIO $ print $ "setup:" ++  (fdId fd) ++ ":" ++ ("node role " ++ hpId ++ " master 1 " ++ show (fdPartition fd) ++ "\r\n")
   case fdRole fd of
     Master -> void $ assertSendTo "flarei" ("node role " ++ hpId ++ " master 1 " ++ show (fdPartition fd) ++ "\r\n") "OK\r\n"
     Slave _ -> void $ assertSendTo "flarei" ("node role " ++ hpId ++ " slave 0 " ++ show (fdPartition fd) ++ "\r\n") "OK\r\n"

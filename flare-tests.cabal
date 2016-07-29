@@ -23,6 +23,7 @@ Executable flare-tests
                  , test-sandbox-hunit
                  , test-sandbox-quickcheck >= 0.0.1.6
                  , unix
+                 , process
   Hs-Source-Dirs:  src
   Main-Is:         Main.hs
   Extensions:      DeriveDataTypeable
