@@ -18,7 +18,7 @@ before_install:
   - cabal update
 
 script:
-  - cabal install
+  - cabal install ./test-sandbox .
 #  - (cd flare && ./autogen.sh && ./configure && make && sudo make install)
 #  - ./test.sh
   - cp /usr/bin/flared .
