@@ -58,7 +58,10 @@ setupWithPath binDir prefix = do
                                    , FlareDaemon 2 (Slave 0)
                                    , FlareDaemon 2 (Slave 1) ]
   mapM_ (\daemon -> registerDaemon daemon (prefix ++ "_" ++ show daemon)) daemons
-  mapM_ (\daemon -> start (fdId daemon) ) daemons
+  flip mapM_ daemons $ \daemon -> do
+    liftIO $ system "sudo netstat -anp | grep flare | grep LISTEN"
+    liftIO $ threadDelay 1000000
+    start (fdId daemon)
   liftIO $ threadDelay 1000000
 
 data FlareRole = Master
