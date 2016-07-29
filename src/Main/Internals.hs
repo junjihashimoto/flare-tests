@@ -40,6 +40,8 @@ setupWithPath binDir prefix = do
                               , "--monitor-threshold", "2"
                               ] (def {psCapture=Just (CaptureBothWithFile (prefix ++ "_flarei_out.txt") (prefix ++ "_flarei_err.txt"))})
   -- Register daemons
+  start "flarei"
+  liftIO $ threadDelay 1000000
   let flaredBin = case (binDir, rootDir) of
                     (Just v, _) -> v </> "flared"
                     (_, Just v) -> v </> "src" </> "flared" </> "flared"
@@ -55,7 +57,7 @@ setupWithPath binDir prefix = do
                                    , FlareDaemon 2 (Slave 0)
                                    , FlareDaemon 2 (Slave 1) ]
   mapM_ (\daemon -> registerDaemon daemon (prefix ++ "_" ++ show daemon)) daemons
-  startAll
+  mapM_ (\daemon -> start (fdId daemon) ) daemons
   liftIO $ threadDelay 1000000
 
 data FlareRole = Master
