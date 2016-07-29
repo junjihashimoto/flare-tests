@@ -22,6 +22,7 @@ before_install:
 
 script:
 #  - cabal install ./test-sandbox .
+  - sudo cat  /etc/hosts
   - cabal install .
 #  - (cd flare && ./autogen.sh && ./configure && make && sudo make install)
 #  - ./test.sh
