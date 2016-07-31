@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 
 script:
-  - docker build
+  - docker build .
 
 services:
   - docker
